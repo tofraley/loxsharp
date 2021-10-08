@@ -9,7 +9,7 @@ namespace loxsharp
         readonly Object Literal;
         readonly int Line;
 
-        Token(TokenType type, String lexeme, Object literal, int line)
+        public Token(TokenType type, String lexeme, Object literal, int line)
         {
             this.Type = type;
             this.Lexeme = lexeme;
