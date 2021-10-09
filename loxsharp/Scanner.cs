@@ -11,9 +11,30 @@ namespace loxsharp
         private int current = 0;
         private int line = 1;
 
+        private Dictionary<String, TokenType> keywords;
+
+
         public Scanner(String source)
         {
             this.source = source;
+            keywords = new Dictionary<String, TokenType>() {
+                { "and", TokenType.AND },
+                { "class", TokenType.CLASS },
+                { "else", TokenType.ELSE },
+                { "false", TokenType.FALSE },
+                { "for", TokenType.FOR },
+                { "fun", TokenType.FUN },
+                { "if", TokenType.IF },
+                { "nil", TokenType.NIL },
+                { "or", TokenType.OR },
+                { "print", TokenType.PRINT },
+                { "return", TokenType.RETURN },
+                { "super", TokenType.SUPER },
+                { "this", TokenType.THIS },
+                { "true", TokenType.TRUE },
+                { "var", TokenType.VAR },
+                { "while", TokenType.WHILE }
+            };
         }
 
         internal List<Token> ScanTokens()
@@ -87,12 +108,37 @@ namespace loxsharp
                     {
                         Number();
                     }
+                    else if (isAlpha(c))
+                    {
+                        identifier();
+                    }
                     else
                     {
                         Lox.Error(line, "Unexpected character.");
                     }
                     break;
             }
+        }
+
+        private void identifier()
+        {
+            while (isAlphaNumeric(Peek())) Advance();
+
+            String text = source.Substring(start, current - start);
+            keywords.TryGetValue(text, out TokenType type);
+            AddToken(type);
+        }
+
+        private bool isAlphaNumeric(char c)
+        {
+            return isAlpha(c) || IsDigit(c);
+        }
+
+        private bool isAlpha(char c)
+        {
+            return (c >= 'a' && c <= 'z') ||
+                   (c >= 'A' && c <= 'Z') ||
+                    c == '_';
         }
 
         private void Number()
