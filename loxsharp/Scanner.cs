@@ -49,10 +49,80 @@ namespace loxsharp
                 case '+': AddToken(TokenType.PLUS); break;
                 case ';': AddToken(TokenType.SEMICOLON); break;
                 case '*': AddToken(TokenType.STAR); break;
+                case '!':
+                    AddToken(Match('=') ? TokenType.BANG_EQUAL : TokenType.BANG);
+                    break;
+                case '=':
+                    AddToken(Match('=') ? TokenType.EQUAL_EQUAL : TokenType.EQUAL);
+                    break;
+                case '<':
+                    AddToken(Match('=') ? TokenType.LESS_EQUAL : TokenType.LESS);
+                    break;
+                case '>':
+                    AddToken(Match('=') ? TokenType.GREATER_EQUAL : TokenType.GREATER);
+                    break;
+                case '/':
+                    if (Match('/'))
+                    {
+                        // A comment goes until the end of the line.
+                        while (Peek() != '\n' && !IsAtEnd()) Advance();
+                    }
+                    else
+                    {
+                        AddToken(TokenType.SLASH);
+                    }
+                    break;
+                case ' ':
+                case '\r':
+                case '\t':
+                    // Ignore whitespace.
+                    break;
+
+                case '\n':
+                    line++;
+                    break;
+                case '"': String(); break;
                 default:
                     Lox.Error(line, "Unexpected character.");
                     break;
             }
+        }
+
+        private void String()
+        {
+            while (Peek() != '"' && !IsAtEnd())
+            {
+                if (Peek() == '\n') line++;
+                Advance();
+            }
+
+            if (IsAtEnd())
+            {
+                Lox.Error(line, "Unterminated string.");
+                return;
+            }
+
+            // The closing ".
+            Advance();
+
+            // Trim the surrounding quotes.
+            String value = source.Substring(start + 1, current - start - 1);
+            AddToken(TokenType.STRING, value);
+        }
+
+        private char Peek()
+        {
+            if (IsAtEnd()) return '\0';
+            return source[current];
+        }
+
+        private bool Match(char expected)
+        {
+            if (IsAtEnd()) return false;
+            if (source[current] != expected) return false;
+
+            current++;
+            return true;
         }
 
         private char Advance()
