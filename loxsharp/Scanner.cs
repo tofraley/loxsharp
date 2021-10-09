@@ -83,9 +83,44 @@ namespace loxsharp
                     break;
                 case '"': String(); break;
                 default:
-                    Lox.Error(line, "Unexpected character.");
+                    if (IsDigit(c))
+                    {
+                        Number();
+                    }
+                    else
+                    {
+                        Lox.Error(line, "Unexpected character.");
+                    }
                     break;
             }
+        }
+
+        private void Number()
+        {
+            while (IsDigit(Peek())) Advance();
+
+            // Look for a fractional part.
+            if (Peek() == '.' && IsDigit(PeekNext()))
+            {
+                // Consume the "."
+                Advance();
+
+                while (IsDigit(Peek())) Advance();
+            }
+
+            AddToken(TokenType.NUMBER,
+                Double.Parse(source.Substring(start, current - start)));
+        }
+
+        private char PeekNext()
+        {
+            if (current + 1 >= source.Length) return '\0';
+            return source[current + 1];
+        }
+
+        private bool IsDigit(char c)
+        {
+            return c >= '0' && c <= '9';
         }
 
         private void String()
