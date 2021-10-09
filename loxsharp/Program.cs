@@ -8,21 +8,20 @@ namespace loxsharp
     {
         static int Main(string[] args)
         {
-            Lox lox = new Lox();
             if (args.Length > 1)
             {
                 Console.WriteLine("Usage: lox [script]");
             }
             else if (args.Length == 1)
             {
-                lox.RunFile(args[0]);
+                return Lox.RunFile(args[0]);
             }
             else
             {
-                lox.RunPrompt();
+                Lox.RunPrompt();
             }
 
-            return lox.GetSysExit();
+            return 0;
         }
 
     }

@@ -4,14 +4,11 @@ using System.IO;
 
 namespace loxsharp
 {
-    public class Lox
+    static public class Lox
     {
-        Boolean _hadError = false;
-        int _sysExit = 0;
+        static Boolean _hadError = false;
 
-        public int GetSysExit() => _sysExit;
-
-        public void RunPrompt()
+        public static void RunPrompt()
         {
             for (;;)
             {
@@ -23,7 +20,7 @@ namespace loxsharp
             }
         }
 
-        private void Run(string source)
+        private static void Run(string source)
         {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.ScanTokens();
@@ -35,19 +32,20 @@ namespace loxsharp
             }
         }
 
-        public void RunFile(string path)
+        public static int RunFile(string path)
         {
             String text = File.ReadAllText(Path.GetFullPath(path));
             Run(text); 
-            if (_hadError) _sysExit = 65;
+            if (_hadError) return 65;
+            return 0;
         }
 
-        private void Error(int line, String message)
+        public static void Error(int line, String message)
         {
             Report(line, "", message);
         }
 
-        private void Report(int line, String where,
+        private static void Report(int line, String where,
                                    String message)
         {
             Console.Error.WriteLine(
