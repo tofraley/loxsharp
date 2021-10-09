@@ -36,7 +36,39 @@ namespace loxsharp
 
         private void ScanToken()
         {
-            throw new NotImplementedException();
+            char c = Advance();
+            switch (c)
+            {
+                case '(': AddToken(TokenType.LEFT_PAREN); break;
+                case ')': AddToken(TokenType.RIGHT_PAREN); break;
+                case '{': AddToken(TokenType.LEFT_BRACE); break;
+                case '}': AddToken(TokenType.RIGHT_BRACE); break;
+                case ',': AddToken(TokenType.COMMA); break;
+                case '.': AddToken(TokenType.DOT); break;
+                case '-': AddToken(TokenType.MINUS); break;
+                case '+': AddToken(TokenType.PLUS); break;
+                case ';': AddToken(TokenType.SEMICOLON); break;
+                case '*': AddToken(TokenType.STAR); break;
+                default:
+                    Lox.Error(line, "Unexpected character.");
+                    break;
+            }
+        }
+
+        private char Advance()
+        {
+            return source[current++];
+        }
+
+        private void AddToken(TokenType type)
+        {
+            AddToken(type, null);
+        }
+
+        private void AddToken(TokenType type, Object literal)
+        {
+            String text = source.Substring(start, current - start);
+            tokens.Add(new Token(type, text, literal, line));
         }
     }
 }
