@@ -4,23 +4,37 @@ namespace loxsharp
 {
     public abstract class Expr
     {
-{{#each this}}
+
+        public interface Visitor<R>
+        {
+            {{#each this}}
+            public R Visit{{this.ClassName}}Expr({{this.ClassName}} expr);
+            {{/each}}
+        }
+
+        public abstract R Accept<R>(Visitor<R> visitor);
+
+        {{#each this}}
         public class {{this.ClassName}} : Expr
         {
-{{#each this.Fields}}
+            {{#each this.Fields}}
             public readonly {{this.Type}} {{this.Name}};
-{{/each}}
+            {{/each}}
 
             public {{this.ClassName}}({{#each this.Fields}}{{this.Type}} {{this.Name}}{{#unless @last}}, {{/unless}}{{/each}})
             {
-{{#each this.Fields}}
-                    this.{{this.Name}} = {{this.Name}};
-{{/each}}
+                {{#each this.Fields}}
+                this.{{this.Name}} = {{this.Name}};
+                {{/each}}
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.Visit{{this.ClassName}}Expr(this);
             }
         }
-{{#unless @last}}
+        {{#unless @last}}
 
-{{/unless}}
-{{/each}}
+        {{/unless}}
+        {{/each}}
     }
 }
