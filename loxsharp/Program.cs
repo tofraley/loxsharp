@@ -8,6 +8,7 @@ namespace loxsharp
     {
         static void Main(string[] args)
         {
+            //Test();
             if (args.Length > 1)
             {
                 Console.WriteLine("Usage: lox [script]");
@@ -18,8 +19,7 @@ namespace loxsharp
             }
             else
             {
-                //Lox.RunPrompt();
-                Test();
+                Lox.RunPrompt();
             }
         }
 
