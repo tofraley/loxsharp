@@ -18,9 +18,25 @@ namespace loxsharp
             }
             else
             {
-                Lox.RunPrompt();
+                //Lox.RunPrompt();
+                Test();
             }
         }
 
+        static void Test()
+        {
+            Expr expression =
+                new Expr.Binary(
+                    new Expr.Unary(
+                        new Expr.Literal(123),
+                        new Token(TokenType.MINUS, "-", null, 1)
+                        ),
+
+                    new Expr.Grouping(
+                            new Expr.Literal(45.67)),
+                    new Token(TokenType.STAR, "*", null, 1));
+
+            Console.WriteLine(new AstPrinter().Print(expression));
+        }
     }
 }
