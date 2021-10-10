@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "loxsharp", "loxsharp\loxsharp.csproj", "{5CDE3852-E265-4180-A639-EB65A91DA749}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstGenerator", "GenerateAst\AstGenerator.csproj", "{87768D24-C021-4B60-887F-9086C7E2650C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AstGenerator", "AstGenerator\AstGenerator.csproj", "{87768D24-C021-4B60-887F-9086C7E2650C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "loxsharp.Tests", "loxsharp.Tests\loxsharp.Tests.csproj", "{647A34D9-3BBD-425A-86CA-9DB061886F61}"
 EndProject
