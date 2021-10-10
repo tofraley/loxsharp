@@ -6,7 +6,7 @@ namespace loxsharp
 {
     class Program
     {
-        static int Main(string[] args)
+        static void Main(string[] args)
         {
             if (args.Length > 1)
             {
@@ -14,14 +14,12 @@ namespace loxsharp
             }
             else if (args.Length == 1)
             {
-                return Lox.RunFile(args[0]);
+                Lox.RunFile(args[0]);
             }
             else
             {
                 Lox.RunPrompt();
             }
-
-            return 0;
         }
 
     }

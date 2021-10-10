@@ -32,12 +32,11 @@ namespace loxsharp
             }
         }
 
-        public static int RunFile(string path)
+        public static void RunFile(string path)
         {
             String text = File.ReadAllText(Path.GetFullPath(path));
             Run(text); 
-            if (_hadError) return 65;
-            return 0;
+            if (_hadError) Environment.Exit(65);
         }
 
         public static void Error(int line, String message)
