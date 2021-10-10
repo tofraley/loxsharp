@@ -2,7 +2,7 @@
 
 namespace loxsharp
 {
-    internal class Token
+    public class Token
     {
         readonly TokenType Type;
         readonly String Lexeme;
