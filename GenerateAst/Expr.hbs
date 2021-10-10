@@ -1,0 +1,26 @@
+﻿using System;
+
+namespace loxsharp
+{
+    public abstract class Expr
+    {
+{{#each this}}
+        public class {{this.ClassName}} : Expr
+        {
+{{#each this.Fields}}
+            public readonly {{this.Type}} {{this.Name}};
+{{/each}}
+
+            public {{this.ClassName}}({{#each this.Fields}}{{this.Type}} {{this.Name}}{{#unless @last}}, {{/unless}}{{/each}})
+            {
+{{#each this.Fields}}
+                    this.{{this.Name}} = {{this.Name}};
+{{/each}}
+            }
+        }
+{{#unless @last}}
+
+{{/unless}}
+{{/each}}
+    }
+}
