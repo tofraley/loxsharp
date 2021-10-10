@@ -108,9 +108,9 @@ namespace loxsharp
                     {
                         Number();
                     }
-                    else if (isAlpha(c))
+                    else if (IsAlpha(c))
                     {
-                        identifier();
+                        Identifier();
                     }
                     else
                     {
@@ -120,21 +120,21 @@ namespace loxsharp
             }
         }
 
-        private void identifier()
+        private void Identifier()
         {
-            while (isAlphaNumeric(Peek())) Advance();
+            while (IsAlphaNumeric(Peek())) Advance();
 
             String text = source.Substring(start, current - start);
             keywords.TryGetValue(text, out TokenType type);
             AddToken(type);
         }
 
-        private bool isAlphaNumeric(char c)
+        private bool IsAlphaNumeric(char c)
         {
-            return isAlpha(c) || IsDigit(c);
+            return IsAlpha(c) || IsDigit(c);
         }
 
-        private bool isAlpha(char c)
+        private bool IsAlpha(char c)
         {
             return (c >= 'a' && c <= 'z') ||
                    (c >= 'A' && c <= 'Z') ||
