@@ -1,6 +1,5 @@
 ﻿using loxsharp.tool;
 using System;
-using System.IO;
 
 namespace GenerateAst
 {
