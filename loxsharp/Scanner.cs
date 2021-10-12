@@ -11,13 +11,8 @@ namespace loxsharp
         private int current = 0;
         private int line = 1;
 
-        private Dictionary<String, TokenType> keywords;
-
-
-        public Scanner(String source)
-        {
-            this.source = source;
-            keywords = new Dictionary<String, TokenType>() {
+        private readonly Dictionary<String, TokenType> keywords = 
+            new Dictionary<String, TokenType>() {
                 { "and", TokenType.AND },
                 { "class", TokenType.CLASS },
                 { "else", TokenType.ELSE },
@@ -35,6 +30,11 @@ namespace loxsharp
                 { "var", TokenType.VAR },
                 { "while", TokenType.WHILE }
             };
+
+
+        public Scanner(String source)
+        {
+            this.source = source;
         }
 
         internal List<Token> ScanTokens()
