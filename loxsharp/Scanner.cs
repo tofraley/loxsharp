@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace loxsharp
 {
-    internal class Scanner
+    public class Scanner
     {
         private readonly String source;
         private readonly List<Token> tokens = new List<Token>();
@@ -37,7 +37,7 @@ namespace loxsharp
             this.source = source;
         }
 
-        internal List<Token> ScanTokens()
+        public List<Token> ScanTokens()
         {
             while (!IsAtEnd())
             {
