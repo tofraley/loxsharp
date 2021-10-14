@@ -26,6 +26,28 @@ namespace loxsharp.Tests
             AssertTokensAreEqual(actual, expected);
         }
 
+        [Theory]
+        [InlineData("(", TokenType.LEFT_PAREN)]
+        [InlineData(")", TokenType.RIGHT_PAREN)]
+        [InlineData("{", TokenType.LEFT_BRACE)]
+        [InlineData("}", TokenType.RIGHT_BRACE)]
+        [InlineData(",", TokenType.COMMA)]
+        [InlineData(".", TokenType.DOT)]
+        [InlineData("-", TokenType.MINUS)]
+        [InlineData("+", TokenType.PLUS)]
+        [InlineData(";", TokenType.SEMICOLON)]
+        [InlineData("*", TokenType.STAR)]
+        public void ScanTokens_Recognizes_SingleCharOperators(string input, TokenType type)
+        {
+            testObject = new Scanner(input);
+
+            Token actual = testObject.ScanTokens().First();
+            Token expected = new Token(type, input,
+                null, 1);
+
+            AssertTokensAreEqual(actual, expected);
+        }
+
         private static void AssertTokensAreEqual(Token actual, Token expected)
         {
             Assert.Equal(expected.Lexeme, actual.Lexeme);
