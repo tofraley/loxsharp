@@ -11,16 +11,23 @@ namespace loxsharp.Tests
     {
         private Scanner testObject;
 
-        [Fact]
-        public void ScanTokens_Recognizes_Numbers()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(1234)]
+        [InlineData(123.1033)]
+        public void ScanTokens_Recognizes_Number(double number)
         {
-            double number = (double)1;
             testObject = new Scanner(number.ToString());
 
             Token actual = testObject.ScanTokens().First();
             Token expected = new Token(TokenType.NUMBER, number.ToString(),
                 number, 1);
 
+            AssertTokensAreEqual(actual, expected);
+        }
+
+        private static void AssertTokensAreEqual(Token actual, Token expected)
+        {
             Assert.Equal(expected.Lexeme, actual.Lexeme);
             Assert.Equal(expected.Line, actual.Line);
             Assert.Equal(expected.Literal, actual.Literal);
