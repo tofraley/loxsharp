@@ -12,21 +12,9 @@ namespace loxsharp.Tests
         private Scanner testObject;
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(1234)]
-        [InlineData(123.1033)]
-        public void ScanTokens_Recognizes_Number(double number)
-        {
-            testObject = new Scanner(number.ToString());
-
-            Token actual = testObject.ScanTokens().First();
-            Token expected = new Token(TokenType.NUMBER, number.ToString(),
-                number, 1);
-
-            AssertTokensAreEqual(actual, expected);
-        }
-
-        [Theory]
+        [InlineData("1", TokenType.NUMBER, 1.0)]
+        [InlineData("1234", TokenType.NUMBER, 1234.0)]
+        [InlineData("123.1033", TokenType.NUMBER, 123.1033)]
         [InlineData("(", TokenType.LEFT_PAREN)]
         [InlineData(")", TokenType.RIGHT_PAREN)]
         [InlineData("{", TokenType.LEFT_BRACE)]
@@ -37,13 +25,22 @@ namespace loxsharp.Tests
         [InlineData("+", TokenType.PLUS)]
         [InlineData(";", TokenType.SEMICOLON)]
         [InlineData("*", TokenType.STAR)]
-        public void ScanTokens_Recognizes_SingleCharOperators(string input, TokenType type)
+        [InlineData("!", TokenType.BANG)]
+        [InlineData("!=", TokenType.BANG_EQUAL)]
+        [InlineData("=", TokenType.EQUAL)]
+        [InlineData("==", TokenType.EQUAL_EQUAL)]
+        [InlineData("<", TokenType.LESS)]
+        [InlineData("<=", TokenType.LESS_EQUAL)]
+        [InlineData(">", TokenType.GREATER)]
+        [InlineData(">=", TokenType.GREATER_EQUAL)]
+        [InlineData("/", TokenType.SLASH)]
+        public void ScanTokens_Recognizes_Numbers_And_Operators(string input, TokenType type, object literal = null)
         {
             testObject = new Scanner(input);
 
             Token actual = testObject.ScanTokens().First();
             Token expected = new Token(type, input,
-                null, 1);
+                literal, 1);
 
             AssertTokensAreEqual(actual, expected);
         }
