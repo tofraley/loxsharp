@@ -45,6 +45,21 @@ namespace loxsharp.Tests
             AssertTokensAreEqual(actual, expected);
         }
 
+        [Theory]
+        [InlineData("// this is a comment\n", TokenType.EOF, "")]
+        [InlineData("// this is a comment\n=", TokenType.EQUAL, "=")]
+        public void ScanTokens_Ignores_Comment(string input, TokenType type, 
+            string lexeme = "", object literal = null, int line = 2)
+        {
+            testObject = new Scanner(input);
+
+            Token actual = testObject.ScanTokens().First();
+            Token expected = new Token(type, lexeme,
+                literal, line);
+
+            AssertTokensAreEqual(actual, expected);
+        }
+
         private static void AssertTokensAreEqual(Token actual, Token expected)
         {
             Assert.Equal(expected.Lexeme, actual.Lexeme);
