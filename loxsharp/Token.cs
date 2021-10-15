@@ -21,5 +21,14 @@ namespace loxsharp
         {
             return Type + " " + Lexeme + " " + Literal;
         }
+
+        public override bool Equals(object obj)
+        {
+            Token token = (Token)obj;
+            return token.Lexeme == this.Lexeme
+                   && token.Line == this.Line
+                   && token.Literal == this.Literal
+                   && token.Type == this.Type;
+        }
     }
 }
