@@ -25,10 +25,14 @@ namespace loxsharp
         public override bool Equals(object obj)
         {
             Token token = (Token)obj;
-            return token.Lexeme == this.Lexeme
-                   && token.Line == this.Line
-                   && token.Literal == this.Literal
-                   && token.Type == this.Type;
+            bool isLexeme = token.Lexeme == this.Lexeme;
+            bool isLine = token.Line == this.Line;
+            bool isLiteral = (this.Literal == null && token.Literal == null) || token.Literal.Equals(this.Literal);
+            bool isType = token.Type == this.Type;
+
+            return isLexeme && isLine && isLiteral && isType;
+                   
+                   
         }
     }
 }
