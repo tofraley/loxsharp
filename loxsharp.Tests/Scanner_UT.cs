@@ -47,7 +47,26 @@ namespace loxsharp.Tests
             Token expected = new Token(type, lexeme,
                 literal, line);
 
-            AssertTokensAreEqual(actual, expected);
+            Assert.Equal(actual, expected);
+        }
+        
+        [Fact]
+        public void ScanTokens_Recognizes_MultipleTokens()
+        {
+            List<Token> expectedTokens = new List<Token> {
+                new Token(TokenType.NUMBER, "1", 1.0, 1),
+                new Token(TokenType.PLUS, "+", null, 1),
+                new Token(TokenType.NUMBER, "2", 2.0, 1)
+            };
+
+            testObject = new Scanner("1+2");
+
+            List<Token> actualTokens = testObject.ScanTokens();
+
+            //List<(Token, Token)> tokens = actualTokens.Zip(expectedTokens).ToList();
+
+            Assert.Equal(expectedTokens[0], actualTokens[0]);
+            
         }
 
         private static void AssertTokensAreEqual(Token actual, Token expected)
