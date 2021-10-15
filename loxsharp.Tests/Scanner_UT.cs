@@ -12,9 +12,9 @@ namespace loxsharp.Tests
         private Scanner testObject;
 
         [Theory]
-        [InlineData("1", TokenType.NUMBER, 1.0)]
-        [InlineData("1234", TokenType.NUMBER, 1234.0)]
-        [InlineData("123.1033", TokenType.NUMBER, 123.1033)]
+        [InlineData("1", TokenType.NUMBER, "1", 1.0)]
+        [InlineData("1234", TokenType.NUMBER, "1234", 1234.0)]
+        [InlineData("123.1033", TokenType.NUMBER, "123.1033", 123.1033)]
         [InlineData("(", TokenType.LEFT_PAREN)]
         [InlineData(")", TokenType.RIGHT_PAREN)]
         [InlineData("{", TokenType.LEFT_BRACE)]
@@ -34,23 +34,13 @@ namespace loxsharp.Tests
         [InlineData(">", TokenType.GREATER)]
         [InlineData(">=", TokenType.GREATER_EQUAL)]
         [InlineData("/", TokenType.SLASH)]
-        public void ScanTokens_Recognizes_Numbers_And_Operators(string input, TokenType type, object literal = null)
+        [InlineData("// this is a comment\n", TokenType.EOF, "", null, 2)]
+        [InlineData("// this is a comment\n=", TokenType.EQUAL, "=", null, 2)]
+        public void ScanTokens_Ignores_Comment(
+            string input, TokenType type, string lexeme = null, 
+            object literal = null, int line = 1)
         {
-            testObject = new Scanner(input);
-
-            Token actual = testObject.ScanTokens().First();
-            Token expected = new Token(type, input,
-                literal, 1);
-
-            AssertTokensAreEqual(actual, expected);
-        }
-
-        [Theory]
-        [InlineData("// this is a comment\n", TokenType.EOF, "")]
-        [InlineData("// this is a comment\n=", TokenType.EQUAL, "=")]
-        public void ScanTokens_Ignores_Comment(string input, TokenType type, 
-            string lexeme = "", object literal = null, int line = 2)
-        {
+            lexeme = lexeme ?? input;
             testObject = new Scanner(input);
 
             Token actual = testObject.ScanTokens().First();
