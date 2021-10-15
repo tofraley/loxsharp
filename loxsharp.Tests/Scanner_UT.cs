@@ -40,7 +40,7 @@ namespace loxsharp.Tests
             string input, TokenType type, string lexeme = null, 
             object literal = null, int line = 1)
         {
-            lexeme = lexeme ?? input;
+            lexeme ??= input;
             testObject = new Scanner(input);
 
             Token actual = testObject.ScanTokens().First();
