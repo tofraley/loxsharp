@@ -56,25 +56,20 @@ namespace loxsharp.Tests
             List<Token> expectedTokens = new List<Token> {
                 new Token(TokenType.NUMBER, "1", 1.0, 1),
                 new Token(TokenType.PLUS, "+", null, 1),
-                new Token(TokenType.NUMBER, "2", 2.0, 1)
+                new Token(TokenType.NUMBER, "2", 2.0, 1),
+                new Token(TokenType.EOF, "", null, 1)
             };
 
             testObject = new Scanner("1+2");
 
             List<Token> actualTokens = testObject.ScanTokens();
 
-            //List<(Token, Token)> tokens = actualTokens.Zip(expectedTokens).ToList();
+            List<(Token, Token)> tokens = expectedTokens.Zip(actualTokens).ToList();
 
-            Assert.Equal(expectedTokens[0], actualTokens[0]);
-            
-        }
-
-        private static void AssertTokensAreEqual(Token actual, Token expected)
-        {
-            Assert.Equal(expected.Lexeme, actual.Lexeme);
-            Assert.Equal(expected.Line, actual.Line);
-            Assert.Equal(expected.Literal, actual.Literal);
-            Assert.Equal(expected.Type, actual.Type);
+            foreach (var (expected, actual) in tokens)
+            {
+                Assert.Equal(expected, actual);
+            }
         }
     }
 }
