@@ -11,7 +11,7 @@ namespace loxsharp
         private int current = 0;
         private int line = 1;
 
-        private readonly Dictionary<String, TokenType> keywords = 
+        private readonly Dictionary<String, TokenType> keywords =
             new Dictionary<String, TokenType>() {
                 { "and", TokenType.AND },
                 { "class", TokenType.CLASS },
