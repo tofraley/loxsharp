@@ -5,6 +5,7 @@ namespace loxsharp
 {
     public class Parser
     {
+        public class ParseException : Exception { }
         private readonly List<Token> tokens;
         private int current = 0;
 
@@ -15,9 +16,17 @@ namespace loxsharp
 
         #region Helpers
 
-        private void Consume(TokenType rIGHT_PAREN, string v)
+        private Token Consume(TokenType type, string message)
         {
-            throw new NotImplementedException();
+            if (Check(type)) return Advance();
+            throw Error(Peek(), message);
+
+        }
+
+        private Exception Error(Token token, string message)
+        {
+            Lox.Error(token, message);
+            return new ParseException();
         }
 
         private bool Match(TokenType type)
