@@ -13,23 +13,7 @@ namespace loxsharp
             this.tokens = tokens;
         }
 
-        private Expr Expression() => Equality();
-
-
-        private Expr Equality()
-        {
-            Expr expr = Comparison();
-
-            while (Match(new TokenType[2] { TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL }))
-            {
-                Token op = Previous();
-                Expr right = Comparison();
-                expr = new Expr.Binary(expr, op, right);
-            }
-
-            return expr;
-        }
-
+        #region Helpers
         private bool Match(IEnumerable<TokenType> types)
         {
             foreach (TokenType type in types)
@@ -70,42 +54,111 @@ namespace loxsharp
             return tokens[current - 1];
         }
 
-        private Expr Comparison()
+        private Expr ParseLeftBinaryOperators(TokenType[] types, Func<Expr> Left, Func<Expr> Right)
         {
-            Expr expr = Term();
+            Expr expr = Left.Invoke();
 
-            while (Match(new TokenType[4]
-                  {
-                    TokenType.GREATER,
-                    TokenType.GREATER_EQUAL,
-                    TokenType.LESS,
-                    TokenType.LESS_EQUAL
-                  }))
+            while (Match(types))
             {
                 Token op = Previous();
-                Expr right = Term();
+                Expr right = Right.Invoke();
                 expr = new Expr.Binary(expr, op, right);
             }
+
             return expr;
+        }
+
+        #endregion 
+
+        #region Rules
+
+        private Expr Expression() => Equality();
+
+        private Expr Equality()
+        {
+            /*             Expr expr = Comparison(); */
+
+            /*             while (Match()) */
+            /*             { */
+            /*                 Token op = Previous(); */
+            /*                 Expr right = Comparison(); */
+            /*                 expr = new Expr.Binary(expr, op, right); */
+            /*             } */
+
+            return ParseLeftBinaryOperators(
+                new TokenType[2] { TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL },
+                Comparison,
+                Comparison
+                );
+        }
+
+
+        private Expr Comparison()
+        {
+            /*             Expr expr = Term(); */
+
+            /*             while (Match()) */
+            /*             { */
+            /*                 Token op = Previous(); */
+            /*                 Expr right = Term(); */
+            /*                 expr = new Expr.Binary(expr, op, right); */
+            /*             } */
+            return ParseLeftBinaryOperators(
+                new TokenType[4]
+                {
+                  TokenType.GREATER,
+                  TokenType.GREATER_EQUAL,
+                  TokenType.LESS,
+                  TokenType.LESS_EQUAL
+                },
+                Term,
+                Term
+                );
         }
 
         private Expr Term()
         {
-            Expr expr = Factor();
+            /*             Expr expr = Factor(); */
 
-            while (Match(new TokenType[2] { TokenType.MINUS, TokenType.PLUS }))
-            {
-                Token op = Previous();
-                Expr right = Factor();
-                expr = new Expr.Binary(expr, op, right);
-            }
+            /*             while (Match()) */
+            /*             { */
+            /*                 Token op = Previous(); */
+            /*                 Expr right = Factor(); */
+            /*                 expr = new Expr.Binary(expr, op, right); */
+            /*             } */
 
-            return expr;
+            return ParseLeftBinaryOperators(
+                new TokenType[2] { TokenType.MINUS, TokenType.PLUS },
+                Factor,
+                Factor
+                );
         }
 
         private Expr Factor()
         {
+
+            /* while (Match()) */
+            /* { */
+            /*     Token op = Previous(); */
+            /*     Expr right = Unary(); */
+            /*     expr = new Expr.Binary(expr, op, right); */
+            /* } */
+
+            return ParseLeftBinaryOperators(
+                new TokenType[2] { TokenType.SLASH, TokenType.STAR },
+                Factor,
+                Unary
+                );
+
+        }
+
+        private Expr Unary()
+        {
             throw new NotImplementedException();
         }
+
+
+
     }
+    #endregion 
 }
