@@ -10,7 +10,7 @@ namespace loxsharp
 
         public static void RunPrompt()
         {
-            for (;;)
+            for (; ; )
             {
                 Console.Write("> ");
                 String line = Console.ReadLine();
@@ -35,7 +35,7 @@ namespace loxsharp
         public static void RunFile(string path)
         {
             String text = File.ReadAllText(Path.GetFullPath(path));
-            Run(text); 
+            Run(text);
             if (_hadError) Environment.Exit(65);
         }
 
@@ -50,6 +50,18 @@ namespace loxsharp
             Console.Error.WriteLine(
                 "[line " + line + "] Error" + where + ": " + message);
             _hadError = true;
+        }
+
+        public static void Error(Token token, String message)
+        {
+            if (token.Type == TokenType.EOF)
+            {
+                Report(token.Line, " at end", message);
+            }
+            else
+            {
+                Report(token.Line, " at '" + token.Lexeme + "'", message);
+            }
         }
     }
 }
