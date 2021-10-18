@@ -14,15 +14,21 @@ namespace loxsharp
         }
 
         #region Helpers
+        private bool Match(TokenType type)
+        {
+            if (Check(type))
+            {
+                Advance();
+                return true;
+            }
+            return false;
+        }
+
         private bool Match(IEnumerable<TokenType> types)
         {
             foreach (TokenType type in types)
             {
-                if (Check(type))
-                {
-                    Advance();
-                    return true;
-                }
+                Match(type);
             }
             return false;
         }
