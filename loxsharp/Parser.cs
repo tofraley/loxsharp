@@ -24,7 +24,7 @@ namespace loxsharp
             {
                 Token op = Previous();
                 Expr right = Comparison();
-                expr = new Expr.Binary(expr, right, op);
+                expr = new Expr.Binary(expr, op, right);
             }
 
             return expr;
@@ -67,10 +67,29 @@ namespace loxsharp
 
         private Token Previous()
         {
-            return tokens[current - 1);
+            return tokens[current - 1];
         }
 
         private Expr Comparison()
+        {
+            Expr expr = Term();
+
+            while (Match(new TokenType[4]
+                  {
+                    TokenType.GREATER,
+                    TokenType.GREATER_EQUAL,
+                    TokenType.LESS,
+                    TokenType.LESS_EQUAL
+                  }))
+            {
+                Token op = Previous();
+                Expr right = Term();
+                expr = new Expr.Binary(expr, op, right);
+            }
+            return expr;
+        }
+
+        private Expr Term()
         {
             throw new NotImplementedException();
         }
