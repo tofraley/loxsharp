@@ -2,10 +2,10 @@
   Fields:
   - Name: Left
     Type: Expr
-  - Name: Right
-    Type: Expr
   - Name: Operator
     Type: Token        
+  - Name: Right
+    Type: Expr
 - ClassName: Grouping
   Fields:
   - Name: Expression
@@ -16,7 +16,7 @@
     Type: Object
 - ClassName: Unary
   Fields:
-  - Name: Right
-    Type: Expr
   - Name: Operator
     Type: Token  
+  - Name: Right
+    Type: Expr
