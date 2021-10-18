@@ -43,9 +43,31 @@ namespace loxsharp
             return false;
         }
 
+        private Token Advance()
+        {
+            if (!IsAtEnd()) current++;
+            return Previous();
+        }
+
+        private bool Check(TokenType type)
+        {
+            if (IsAtEnd()) return false;
+            return Peek().Type == type;
+        }
+
+        private Token Peek()
+        {
+            return tokens[current];
+        }
+
+        private bool IsAtEnd()
+        {
+            return Peek().Type == TokenType.EOF;
+        }
+
         private Token Previous()
         {
-            throw new NotImplementedException();
+            return tokens[current - 1);
         }
 
         private Expr Comparison()
