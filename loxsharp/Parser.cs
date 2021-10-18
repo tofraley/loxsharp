@@ -14,6 +14,12 @@ namespace loxsharp
         }
 
         #region Helpers
+
+        private void Consume(TokenType rIGHT_PAREN, string v)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool Match(TokenType type)
         {
             if (Check(type))
@@ -160,11 +166,36 @@ namespace loxsharp
 
         private Expr Unary()
         {
-            throw new NotImplementedException();
+            if (Match(new TokenType[2] { TokenType.BANG, TokenType.MINUS }))
+            {
+                Token op = Previous();
+                Expr right = Unary();
+                return new Expr.Unary(op, right);
+            }
+
+            return Primary();
         }
 
+        private Expr Primary()
+        {
+            if (Match(TokenType.FALSE)) return new Expr.Literal(false);
+            if (Match(TokenType.TRUE)) return new Expr.Literal(true);
+            if (Match(TokenType.NIL)) return new Expr.Literal(null);
 
+            if (Match(new TokenType[2] { TokenType.NUMBER, TokenType.STRING }))
+            {
+                return new Expr.Literal(Previous().Literal);
+            }
 
+            if (Match(TokenType.LEFT_PAREN))
+            {
+                Expr expr = Expression();
+                Consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+                return new Expr.Grouping(expr);
+            }
+
+            return null;
+        }
+        #endregion
     }
-    #endregion 
 }
