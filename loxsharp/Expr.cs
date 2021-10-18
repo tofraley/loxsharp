@@ -21,14 +21,15 @@ namespace loxsharp
             public readonly Expr Right;
             public readonly Token Operator;
 
-            public Binary(Expr Left, Expr Right, Token Operator)
+            public Binary(Expr Left, Token Operator, Expr Right)
             {
                 this.Left = Left;
                 this.Right = Right;
                 this.Operator = Operator;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitBinaryExpr(this);
             }
         }
@@ -42,7 +43,8 @@ namespace loxsharp
                 this.Expression = Expression;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitGroupingExpr(this);
             }
         }
@@ -56,7 +58,8 @@ namespace loxsharp
                 this.Value = Value;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitLiteralExpr(this);
             }
         }
@@ -72,7 +75,8 @@ namespace loxsharp
                 this.Operator = Operator;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitUnaryExpr(this);
             }
         }
