@@ -91,6 +91,20 @@ namespace loxsharp
 
         private Expr Term()
         {
+            Expr expr = Factor();
+
+            while (Match(new TokenType[2] { TokenType.MINUS, TokenType.PLUS }))
+            {
+                Token op = Previous();
+                Expr right = Factor();
+                expr = new Expr.Binary(expr, op, right);
+            }
+
+            return expr;
+        }
+
+        private Expr Factor()
+        {
             throw new NotImplementedException();
         }
     }
