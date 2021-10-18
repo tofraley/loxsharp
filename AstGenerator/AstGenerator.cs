@@ -23,10 +23,6 @@ namespace loxsharp.tool
     {
         public void Run(String[] args)
         {
-            if (args.Length != 3) {
-              Console.Error.WriteLine("Usage: generate_ast <types path> <template path> <output path>");
-              Environment.Exit(64);
-            }
             String typesDir = args[0];
             String templateDir = args[1];
             String outputDir = args[2];
