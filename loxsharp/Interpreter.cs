@@ -22,7 +22,26 @@ namespace loxsharp
 
         public object VisitUnaryExpr(Expr.Unary expr)
         {
-            throw new NotImplementedException();
+            object right = Evaluate(expr.Right);
+
+            switch (expr.Operator.Type)
+            {
+                case TokenType.BANG:
+                    return !IsTruthy(right);
+                case TokenType.MINUS:
+                    return -(double)right;
+            }
+
+            return null;
+        }
+
+        private bool IsTruthy(object obj)
+        {
+            if (obj == null) return false;
+            if (obj is Boolean)
+                return (bool)obj;
+            else
+                return true;
         }
 
         private object Evaluate(Expr expr)
