@@ -17,7 +17,7 @@ namespace loxsharp
 
         public object VisitLiteralExpr(Expr.Literal expr)
         {
-            throw new NotImplementedException();
+            return expr.Value;
         }
 
         public object VisitUnaryExpr(Expr.Unary expr)
