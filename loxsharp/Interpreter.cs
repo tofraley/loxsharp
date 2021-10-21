@@ -12,7 +12,7 @@ namespace loxsharp
 
         public object VisitGroupingExpr(Expr.Grouping expr)
         {
-            return evaluate(expr.Expression);
+            return Evaluate(expr.Expression);
         }
 
         public object VisitLiteralExpr(Expr.Literal expr)
@@ -23,6 +23,11 @@ namespace loxsharp
         public object VisitUnaryExpr(Expr.Unary expr)
         {
             throw new NotImplementedException();
+        }
+
+        private object Evaluate(Expr expr)
+        {
+            return expr.Accept(this);
         }
     }
 }
