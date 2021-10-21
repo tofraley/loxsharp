@@ -7,7 +7,52 @@ namespace loxsharp
     {
         public object VisitBinaryExpr(Expr.Binary expr)
         {
-            throw new NotImplementedException();
+            object left = Evaluate(expr.Left);
+            object right = Evaluate(expr.Right);
+
+            switch (expr.Operator.Type)
+            {
+                case TokenType.BANG_EQUAL:
+                    return !IsEqual(left, right);
+                case TokenType.EQUAL_EQUAL:
+                    return IsEqual(left, right);
+                case TokenType.GREATER:
+                    return (double)left > (double)right;
+                case TokenType.GREATER_EQUAL:
+                    return (double)left >= (double)right;
+                case TokenType.LESS:
+                    return (double)left < (double)right;
+                case TokenType.LESS_EQUAL:
+                    return (double)left <= (double)right;
+                case TokenType.MINUS:
+                    return (double)left - (double)right;
+                case TokenType.PLUS:
+                    if (left is Double && right is Double)
+                    {
+                        return (double)left + (double)right;
+                    }
+
+                    if (left is String && right is String)
+                    {
+                        return (String)left + (String)right;
+                    }
+
+                    break;
+                case TokenType.SLASH:
+                    return (double)left / (double)right;
+                case TokenType.STAR:
+                    return (double)left * (double)right;
+            }
+
+            return null;
+        }
+
+        private bool IsEqual(object a, object b)
+        {
+            if (a == null && b == null) return true;
+            if (a == null) return false;
+
+            return a.Equals(b);
         }
 
         public object VisitGroupingExpr(Expr.Grouping expr)
