@@ -6,7 +6,7 @@ namespace loxsharp
 {
     static public class Lox
     {
-        static Boolean _hadError = false;
+        static Boolean hadError = false;
 
         public static void RunPrompt()
         {
@@ -16,7 +16,7 @@ namespace loxsharp
                 String line = Console.ReadLine();
                 if (line == null) break;
                 Run(line);
-                _hadError = false;
+                hadError = false;
             }
         }
 
@@ -24,19 +24,22 @@ namespace loxsharp
         {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.ScanTokens();
+            Console.WriteLine("Creating Parser...");
+            Parser parser = new Parser(tokens);
+            Console.WriteLine("Parsing...");
+            Expr expression = parser.Parse();
 
-            // For now, just print the tokens.
-            foreach (Token token in tokens)
-            {
-                Console.WriteLine(token);
-            }
+            Console.WriteLine("Done Parsing...");
+            if (hadError) return;
+
+            Console.WriteLine(new AstPrinter().Print(expression));
         }
 
         public static void RunFile(string path)
         {
             String text = File.ReadAllText(Path.GetFullPath(path));
             Run(text);
-            if (_hadError) Environment.Exit(65);
+            if (hadError) Environment.Exit(65);
         }
 
         public static void Error(int line, String message)
@@ -49,7 +52,7 @@ namespace loxsharp
         {
             Console.Error.WriteLine(
                 "[line " + line + "] Error" + where + ": " + message);
-            _hadError = true;
+            hadError = true;
         }
 
         public static void Error(Token token, String message)
