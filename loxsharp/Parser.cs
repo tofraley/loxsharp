@@ -14,6 +14,18 @@ namespace loxsharp
             this.tokens = tokens;
         }
 
+        public Expr Parse()
+        {
+            try
+            {
+                return Expression();
+            }
+            catch (ParseException ex)
+            {
+                return null;
+            }
+        }
+
         #region Helpers
 
         private void Synchronize()
@@ -69,7 +81,7 @@ namespace loxsharp
         {
             foreach (TokenType type in types)
             {
-                Match(type);
+                if (Match(type)) return true;
             }
             return false;
         }
@@ -123,15 +135,6 @@ namespace loxsharp
 
         private Expr Equality()
         {
-            /*             Expr expr = Comparison(); */
-
-            /*             while (Match()) */
-            /*             { */
-            /*                 Token op = Previous(); */
-            /*                 Expr right = Comparison(); */
-            /*                 expr = new Expr.Binary(expr, op, right); */
-            /*             } */
-
             return ParseLeftBinaryOperators(
                 new TokenType[2] { TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL },
                 Comparison,
@@ -142,14 +145,6 @@ namespace loxsharp
 
         private Expr Comparison()
         {
-            /*             Expr expr = Term(); */
-
-            /*             while (Match()) */
-            /*             { */
-            /*                 Token op = Previous(); */
-            /*                 Expr right = Term(); */
-            /*                 expr = new Expr.Binary(expr, op, right); */
-            /*             } */
             return ParseLeftBinaryOperators(
                 new TokenType[4]
                 {
@@ -165,15 +160,6 @@ namespace loxsharp
 
         private Expr Term()
         {
-            /*             Expr expr = Factor(); */
-
-            /*             while (Match()) */
-            /*             { */
-            /*                 Token op = Previous(); */
-            /*                 Expr right = Factor(); */
-            /*                 expr = new Expr.Binary(expr, op, right); */
-            /*             } */
-
             return ParseLeftBinaryOperators(
                 new TokenType[2] { TokenType.MINUS, TokenType.PLUS },
                 Factor,
@@ -183,17 +169,9 @@ namespace loxsharp
 
         private Expr Factor()
         {
-
-            /* while (Match()) */
-            /* { */
-            /*     Token op = Previous(); */
-            /*     Expr right = Unary(); */
-            /*     expr = new Expr.Binary(expr, op, right); */
-            /* } */
-
             return ParseLeftBinaryOperators(
                 new TokenType[2] { TokenType.SLASH, TokenType.STAR },
-                Factor,
+                Unary,
                 Unary
                 );
 
@@ -229,7 +207,7 @@ namespace loxsharp
                 return new Expr.Grouping(expr);
             }
 
-            return null;
+            throw Error(Peek(), "Expect expression.");
         }
         #endregion
     }
