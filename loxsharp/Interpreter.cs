@@ -12,7 +12,7 @@ namespace loxsharp
 
         public object VisitGroupingExpr(Expr.Grouping expr)
         {
-            throw new NotImplementedException();
+            return evaluate(expr.Expression);
         }
 
         public object VisitLiteralExpr(Expr.Literal expr)
