@@ -77,4 +77,44 @@ namespace loxsharp
             }
         }
     }
+
+    public abstract class Stmt
+    {
+
+        public interface Visitor<R>
+        {
+            public R VisitExpressionStmt(Expression stmt);
+            public R VisitPrintStmt(Print stmt);
+        }
+
+        public abstract R Accept<R>(Visitor<R> visitor);
+
+        public class Expression : Stmt
+        {
+            public readonly Expr Expression;
+
+            public Expression(Expr Expression)
+            {
+                this.Expression = Expression;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitExpressionStmt(this);
+            }
+        }
+
+        public class Print : Stmt
+        {
+            public readonly Expr Expression;
+
+            public Print(Expr Expression)
+            {
+                this.Expression = Expression;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitPrintStmt(this);
+            }
+        }
+    }
 }
