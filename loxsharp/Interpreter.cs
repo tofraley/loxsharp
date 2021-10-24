@@ -5,6 +5,35 @@ namespace loxsharp
 {
     public class Interpreter : Expr.Visitor<Object>
     {
+        public void Interpret(Expr expression)
+        {
+            try
+            {
+                object value = Evaluate(expression);
+                Console.WriteLine(Stringify(value);
+            }
+            catch (RuntimeError error)
+            {
+                Lox.RuntimeError(error);
+            }
+        }
+
+        private String Stringify(object obj)
+        {
+            if (obj == null) return "nil";
+
+            if (obj is Double)
+            {
+                String text = obj.ToString();
+                if (text.EndsWith(".0"))
+                {
+                    text = text.Substring(0, text.Length - 2);
+                }
+                return text;
+            }
+            return obj.ToString();
+        }
+
         public object VisitBinaryExpr(Expr.Binary expr)
         {
             object left = Evaluate(expr.Left);
@@ -17,14 +46,19 @@ namespace loxsharp
                 case TokenType.EQUAL_EQUAL:
                     return IsEqual(left, right);
                 case TokenType.GREATER:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left > (double)right;
                 case TokenType.GREATER_EQUAL:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left >= (double)right;
                 case TokenType.LESS:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left < (double)right;
                 case TokenType.LESS_EQUAL:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left <= (double)right;
                 case TokenType.MINUS:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left - (double)right;
                 case TokenType.PLUS:
                     if (left is Double && right is Double)
@@ -37,14 +71,29 @@ namespace loxsharp
                         return (String)left + (String)right;
                     }
 
-                    break;
+                    throw new RuntimeError(expr.Operator,
+                            "Operands must be two numbers or two strings.");
                 case TokenType.SLASH:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left / (double)right;
                 case TokenType.STAR:
+                    CheckNumberOperands(expr.Operator, left, right);
                     return (double)left * (double)right;
             }
 
             return null;
+        }
+
+        private void CheckNumberOperands(Token oper8r, object left, object right)
+        {
+            if (left is Double && right is Double) return;
+            throw new RuntimeError(oper8r, "Operands must be numbers.");
+        }
+
+        private void CheckNumberOperand(Token oper8r, object operand)
+        {
+            if (operand is Double) return;
+            throw new RuntimeError(oper8r, "Operand must be a number.");
         }
 
         private bool IsEqual(object a, object b)
@@ -74,6 +123,7 @@ namespace loxsharp
                 case TokenType.BANG:
                     return !IsTruthy(right);
                 case TokenType.MINUS:
+                    CheckNumberOperand(expr.Operator, right);
                     return -(double)right;
             }
 
