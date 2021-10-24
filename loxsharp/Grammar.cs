@@ -91,11 +91,11 @@ namespace loxsharp
 
         public class Expression : Stmt
         {
-            public readonly Expr Expression;
+            public readonly Expr Expr;
 
-            public Expression(Expr Expression)
+            public Expression(Expr Expr)
             {
-                this.Expression = Expression;
+                this.Expr = Expr;
             }
 
             public override R Accept<R>(Visitor<R> visitor) {
@@ -105,11 +105,11 @@ namespace loxsharp
 
         public class Print : Stmt
         {
-            public readonly Expr Expression;
+            public readonly Expr Expr;
 
-            public Print(Expr Expression)
+            public Print(Expr Expr)
             {
-                this.Expression = Expression;
+                this.Expr = Expr;
             }
 
             public override R Accept<R>(Visitor<R> visitor) {

@@ -7,14 +7,14 @@ namespace GenerateAst
     {
         static void Main(string[] args)
         {
-            String output = "~/projects/loxsharp/loxsharp/Expr.cs";
+            String output = "../loxsharp/Grammar.cs";
             if (args.Length > 0)
             {
                 output = args[0];
             }
 
             AstGenerator gen = new AstGenerator();
-            gen.Run(new string[] { "Types.yml", "Expr.hbs", output });
+            gen.Run(new string[] { "Types.yml", "Grammar.hbs", output });
             Console.WriteLine("Done");
         }
     }
