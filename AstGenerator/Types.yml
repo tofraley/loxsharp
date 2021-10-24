@@ -1,22 +1,34 @@
-﻿- ClassName: Binary
-  Fields:
-  - Name: Left
-    Type: Expr
-  - Name: Operator
-    Type: Token        
-  - Name: Right
-    Type: Expr
-- ClassName: Grouping
-  Fields:
-  - Name: Expression
-    Type: Expr
-- ClassName: Literal
-  Fields:
-  - Name: Value
-    Type: Object
-- ClassName: Unary
-  Fields:
-  - Name: Operator
-    Type: Token  
-  - Name: Right
-    Type: Expr
+﻿- AbstractClassName: Expr
+  ImplClasses:
+  - ClassName: Binary
+    Fields:
+    - Name: Left
+      Type: Expr
+    - Name: Operator
+      Type: Token        
+    - Name: Right
+      Type: Expr
+  - ClassName: Grouping
+    Fields:
+    - Name: Expression
+      Type: Expr
+  - ClassName: Literal
+    Fields:
+    - Name: Value
+      Type: Object
+  - ClassName: Unary
+    Fields:
+    - Name: Operator
+      Type: Token  
+    - Name: Right
+      Type: Expr
+- AbstractClassName: Stmt
+  ImplClasses:
+  - ClassName: Expression
+    Fields:
+    - Name: Expression
+      Type: Expr
+  - ClassName: Print
+    Fields:
+    - Name: Expression
+      Type: Expr
