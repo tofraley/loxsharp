@@ -20,7 +20,7 @@ namespace loxsharp
             {
                 return Expression();
             }
-            catch (ParseException ex)
+            catch (ParseException)
             {
                 return null;
             }
