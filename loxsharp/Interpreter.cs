@@ -10,7 +10,7 @@ namespace loxsharp
             try
             {
                 object value = Evaluate(expression);
-                Console.WriteLine(Stringify(value);
+                Console.WriteLine(Stringify(value));
             }
             catch (RuntimeError error)
             {
