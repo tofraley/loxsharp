@@ -6,6 +6,7 @@ namespace loxsharp
 {
     static public class Lox
     {
+        private static readonly Interpreter interpreter = new Interpreter();
         static Boolean hadError = false;
         static Boolean hadRuntimeError = false;
 
@@ -25,15 +26,12 @@ namespace loxsharp
         {
             Scanner scanner = new Scanner(source);
             List<Token> tokens = scanner.ScanTokens();
-            Console.WriteLine("Creating Parser...");
             Parser parser = new Parser(tokens);
-            Console.WriteLine("Parsing...");
             Expr expression = parser.Parse();
 
-            Console.WriteLine("Done Parsing...");
             if (hadError) return;
 
-            Console.WriteLine(new AstPrinter().Print(expression));
+            interpreter.Interpret(expression);
         }
 
         public static void RuntimeError(RuntimeError error)
