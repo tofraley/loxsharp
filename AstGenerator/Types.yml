@@ -26,9 +26,9 @@
   ImplClasses:
   - ClassName: Expression
     Fields:
-    - Name: Expression
+    - Name: Expr
       Type: Expr
   - ClassName: Print
     Fields:
-    - Name: Expression
+    - Name: Expr
       Type: Expr
