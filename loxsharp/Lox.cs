@@ -7,6 +7,7 @@ namespace loxsharp
     static public class Lox
     {
         static Boolean hadError = false;
+        static Boolean hadRuntimeError = false;
 
         public static void RunPrompt()
         {
