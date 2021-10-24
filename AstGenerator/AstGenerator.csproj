@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\loxsharp\loxsharp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Expr.hbs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
