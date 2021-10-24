@@ -4,12 +4,12 @@ namespace loxsharp
 {
     public class RuntimeError : Exception
     {
-        private readonly Token token;
+        public readonly Token Token;
 
         public RuntimeError(Token token, String message)
             : base(message)
         {
-            this.token = token;
+            this.Token = token;
         }
     }
 }
