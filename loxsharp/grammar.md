@@ -1,4 +1,12 @@
-﻿expression     → literal
+﻿program        → statement* EOF ;
+
+statement      → exprStmt
+               | printStmt ;
+
+exprStmt       → expression ";" ;
+printStmt      → "print" expression ";" ;
+
+expression     → literal
                | unary
                | binary
                | grouping ;
