@@ -2,34 +2,35 @@
 
 namespace loxsharp
 {
-    public abstract class Expr
+    {{#each this as | absClass |}}
+    public abstract class {{absClass.AbstractClassName}}
     {
 
         public interface Visitor<R>
         {
-            {{#each this}}
-            public R Visit{{this.ClassName}}Expr({{this.ClassName}} expr);
+            {{#each absClass.ImplClasses as | implClass |}}
+            public R Visit{{implClass.ClassName}}{{absClass.AbstractClassName}}({{implClass.ClassName}} {{absClass.AbstractParam}});
             {{/each}}
         }
 
         public abstract R Accept<R>(Visitor<R> visitor);
 
-        {{#each this}}
-        public class {{this.ClassName}} : Expr
+        {{#each absClass.ImplClasses as | implClass |}}
+        public class {{implClass.ClassName}} : {{absClass.AbstractClassName}}
         {
-            {{#each this.Fields}}
-            public readonly {{this.Type}} {{this.Name}};
+            {{#each implClass.Fields as | field | }}
+            public readonly {{field.Type}} {{field.Name}};
             {{/each}}
 
-            public {{this.ClassName}}({{#each this.Fields}}{{this.Type}} {{this.Name}}{{#unless @last}}, {{/unless}}{{/each}})
+            public {{implClass.ClassName}}({{#each implClass.Fields as | field |}}{{field.Type}} {{field.Name}}{{#unless @last}}, {{/unless}}{{/each}})
             {
-                {{#each this.Fields}}
-                this.{{this.Name}} = {{this.Name}};
+                {{#each implClass.Fields as | field |}}
+                this.{{field.Name}} = {{field.Name}};
                 {{/each}}
             }
 
             public override R Accept<R>(Visitor<R> visitor) {
-                return visitor.Visit{{this.ClassName}}Expr(this);
+                return visitor.Visit{{implClass.ClassName}}{{absClass.AbstractClassName}}(this);
             }
         }
         {{#unless @last}}
@@ -37,4 +38,8 @@ namespace loxsharp
         {{/unless}}
         {{/each}}
     }
+    {{#unless @last}}
+
+    {{/unless}}
+    {{/each}}
 }
