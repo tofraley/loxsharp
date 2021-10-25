@@ -28,7 +28,8 @@ namespace loxsharp
                 this.Right = Right;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitBinaryExpr(this);
             }
         }
@@ -42,7 +43,8 @@ namespace loxsharp
                 this.Expression = Expression;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitGroupingExpr(this);
             }
         }
@@ -56,7 +58,8 @@ namespace loxsharp
                 this.Value = Value;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitLiteralExpr(this);
             }
         }
@@ -72,7 +75,8 @@ namespace loxsharp
                 this.Right = Right;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitUnaryExpr(this);
             }
         }
@@ -80,6 +84,8 @@ namespace loxsharp
 
     public abstract class Stmt
     {
+
+        public class Nothing { }
 
         public interface Visitor<R>
         {
@@ -98,7 +104,8 @@ namespace loxsharp
                 this.Expr = Expr;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitExpressionStmt(this);
             }
         }
@@ -112,7 +119,8 @@ namespace loxsharp
                 this.Expr = Expr;
             }
 
-            public override R Accept<R>(Visitor<R> visitor) {
+            public override R Accept<R>(Visitor<R> visitor)
+            {
                 return visitor.VisitPrintStmt(this);
             }
         }

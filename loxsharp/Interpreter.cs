@@ -1,16 +1,19 @@
 
 using System;
+using System.Collections.Generic;
 
 namespace loxsharp
 {
-    public class Interpreter : Expr.Visitor<Object>
+    public class Interpreter : Expr.Visitor<Object>, Stmt.Visitor<Stmt.Nothing>
     {
-        public void Interpret(Expr expression)
+        public void Interpret(List<Stmt> statements)
         {
             try
             {
-                object value = Evaluate(expression);
-                Console.WriteLine(Stringify(value));
+                foreach (Stmt statement in statements)
+                {
+                    Execute(statement);
+                }
             }
             catch (RuntimeError error)
             {
@@ -18,21 +21,25 @@ namespace loxsharp
             }
         }
 
-        private String Stringify(object obj)
-        {
-            if (obj == null) return "nil";
 
-            if (obj is Double)
-            {
-                String text = obj.ToString();
-                if (text.EndsWith(".0"))
-                {
-                    text = text.Substring(0, text.Length - 2);
-                }
-                return text;
-            }
-            return obj.ToString();
+        #region Stmt.Visitor
+
+        public Stmt.Nothing VisitExpressionStmt(Stmt.Expression stmt)
+        {
+            Evaluate(stmt.Expr);
+            return null;
         }
+
+        public Stmt.Nothing VisitPrintStmt(Stmt.Print stmt)
+        {
+            object value = Evaluate(stmt.Expr);
+            Console.WriteLine(Stringify(value));
+            return null;
+        }
+
+        #endregion Stmt.Visitor
+
+        #region Expr.Visitor
 
         public object VisitBinaryExpr(Expr.Binary expr)
         {
@@ -130,6 +137,15 @@ namespace loxsharp
             return null;
         }
 
+        #endregion Expr.Visitor
+
+        #region Helpers
+
+        private void Execute(Stmt stmt)
+        {
+            stmt.Accept(this);
+        }
+
         private bool IsTruthy(object obj)
         {
             if (obj == null) return false;
@@ -143,5 +159,23 @@ namespace loxsharp
         {
             return expr.Accept(this);
         }
+
+        private String Stringify(object obj)
+        {
+            if (obj == null) return "nil";
+
+            if (obj is Double)
+            {
+                String text = obj.ToString();
+                if (text.EndsWith(".0"))
+                {
+                    text = text.Substring(0, text.Length - 2);
+                }
+                return text;
+            }
+            return obj.ToString();
+        }
+
+        #endregion Helpers
     }
 }
