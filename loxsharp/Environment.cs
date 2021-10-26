@@ -7,13 +7,24 @@ namespace loxsharp
     {
         private readonly Dictionary<String, object> values = new Dictionary<String, object>();
 
+        public void Assign(Token name, object value)
+        {
+            if (values.ContainsKey(name.Lexeme))
+            {
+                Add(name.Lexeme, value);
+            }
+            else
+            {
+                throw UndefinedVariable(name);
+            }
+        }
+
         public void Define(String name, object value)
         {
-            if (values.ContainsKey(name))
+            if (!values.TryAdd(name, value))
             {
-                values.Remove(name);
+                Add(name, value);
             }
-            values.Add(name, value);
         }
 
         public object Get(Token name)
@@ -24,7 +35,18 @@ namespace loxsharp
                 return value;
             }
 
-            throw new RuntimeError(name, $"Undefined variable '{name.Lexeme}'.");
+            throw UndefinedVariable(name);
+        }
+
+        private void Add(String name, object value)
+        {
+            values.Remove(name);
+            values.Add(name, value);
+        }
+
+        private RuntimeError UndefinedVariable(Token name)
+        {
+            return new RuntimeError(name, $"Undefined variable '{name.Lexeme}'.");
         }
     }
 }
