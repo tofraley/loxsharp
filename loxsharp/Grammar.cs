@@ -11,6 +11,7 @@ namespace loxsharp
             public R VisitGroupingExpr(Grouping expr);
             public R VisitLiteralExpr(Literal expr);
             public R VisitUnaryExpr(Unary expr);
+            public R VisitVariableExpr(Variable expr);
         }
 
         public abstract R Accept<R>(Visitor<R> visitor);
@@ -28,8 +29,7 @@ namespace loxsharp
                 this.Right = Right;
             }
 
-            public override R Accept<R>(Visitor<R> visitor)
-            {
+            public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitBinaryExpr(this);
             }
         }
@@ -43,8 +43,7 @@ namespace loxsharp
                 this.Expression = Expression;
             }
 
-            public override R Accept<R>(Visitor<R> visitor)
-            {
+            public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitGroupingExpr(this);
             }
         }
@@ -58,8 +57,7 @@ namespace loxsharp
                 this.Value = Value;
             }
 
-            public override R Accept<R>(Visitor<R> visitor)
-            {
+            public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitLiteralExpr(this);
             }
         }
@@ -75,9 +73,22 @@ namespace loxsharp
                 this.Right = Right;
             }
 
-            public override R Accept<R>(Visitor<R> visitor)
-            {
+            public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitUnaryExpr(this);
+            }
+        }
+
+        public class Variable : Expr
+        {
+            public readonly Token Name;
+
+            public Variable(Token Name)
+            {
+                this.Name = Name;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitVariableExpr(this);
             }
         }
     }
@@ -85,12 +96,11 @@ namespace loxsharp
     public abstract class Stmt
     {
 
-        public class Nothing { }
-
         public interface Visitor<R>
         {
             public R VisitExpressionStmt(Expression stmt);
             public R VisitPrintStmt(Print stmt);
+            public R VisitVarStmt(Var stmt);
         }
 
         public abstract R Accept<R>(Visitor<R> visitor);
@@ -104,8 +114,7 @@ namespace loxsharp
                 this.Expr = Expr;
             }
 
-            public override R Accept<R>(Visitor<R> visitor)
-            {
+            public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitExpressionStmt(this);
             }
         }
@@ -119,9 +128,24 @@ namespace loxsharp
                 this.Expr = Expr;
             }
 
-            public override R Accept<R>(Visitor<R> visitor)
-            {
+            public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitPrintStmt(this);
+            }
+        }
+
+        public class Var : Stmt
+        {
+            public readonly Token Name;
+            public readonly Expr Initializer;
+
+            public Var(Token Name, Expr Initializer)
+            {
+                this.Name = Name;
+                this.Initializer = Initializer;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitVarStmt(this);
             }
         }
     }

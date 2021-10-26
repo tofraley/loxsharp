@@ -22,6 +22,10 @@
       Type: Token  
     - Name: Right
       Type: Expr
+  - ClassName: Variable
+    Fields:
+    - Name: Name
+      Type: Token
 - AbstractClassName: Stmt
   ImplClasses:
   - ClassName: Expression
@@ -31,4 +35,10 @@
   - ClassName: Print
     Fields:
     - Name: Expr
+      Type: Expr
+  - ClassName: Var
+    Fields:
+    - Name: Name
+      Type: Token
+    - Name: Initializer
       Type: Expr
