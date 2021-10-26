@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 namespace loxsharp
 {
-    public class Interpreter : Expr.Visitor<Object>, Stmt.Visitor<Stmt.Nothing>
+    public class Nothing { }
+
+    public class Interpreter : Expr.Visitor<Object>, Stmt.Visitor<Nothing>
     {
+        private Environment environment = new Environment();
+
         public void Interpret(List<Stmt> statements)
         {
             try
@@ -24,16 +28,28 @@ namespace loxsharp
 
         #region Stmt.Visitor
 
-        public Stmt.Nothing VisitExpressionStmt(Stmt.Expression stmt)
+        public Nothing VisitExpressionStmt(Stmt.Expression stmt)
         {
             Evaluate(stmt.Expr);
             return null;
         }
 
-        public Stmt.Nothing VisitPrintStmt(Stmt.Print stmt)
+        public Nothing VisitPrintStmt(Stmt.Print stmt)
         {
             object value = Evaluate(stmt.Expr);
             Console.WriteLine(Stringify(value));
+            return null;
+        }
+
+        public Nothing VisitVarStmt(Stmt.Var stmt)
+        {
+            object value = null;
+            if (stmt.Initializer != null)
+            {
+                value = Evaluate(stmt.Initializer);
+            }
+
+            environment.Define(stmt.Name.Lexeme, value);
             return null;
         }
 
@@ -135,6 +151,11 @@ namespace loxsharp
             }
 
             return null;
+        }
+
+        public object VisitVariableExpr(Expr.Variable expr)
+        {
+            return environment.Get(expr.Name);
         }
 
         #endregion Expr.Visitor
