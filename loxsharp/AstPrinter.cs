@@ -22,17 +22,22 @@ namespace loxsharp
             return Parenthesize("group", new List<Expr> { expr.Expression });
         }
 
-        
+
         public String VisitLiteralExpr(Expr.Literal expr)
         {
             if (expr.Value == null) return "nil";
             return expr.Value.ToString();
         }
 
-        
+
         public String VisitUnaryExpr(Expr.Unary expr)
         {
             return Parenthesize(expr.Operator.Lexeme, new List<Expr> { expr.Right });
+        }
+
+        public String VisitVariableExpr(Expr.Variable expr)
+        {
+            throw new NotImplementedException();
         }
 
         private String Parenthesize(String name, IEnumerable<Expr> exprs)
