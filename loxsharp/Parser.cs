@@ -5,7 +5,7 @@ namespace loxsharp
 {
     public class Parser
     {
-        public class ParseException : Exception { }
+        public class ParseError : Exception { }
         private readonly List<Token> tokens;
         private int current = 0;
 
@@ -19,13 +19,41 @@ namespace loxsharp
             List<Stmt> statements = new List<Stmt>();
             while (!IsAtEnd())
             {
-                statements.Add(Statement());
+                statements.Add(Declaration());
             }
 
             return statements;
         }
 
         #region Helpers
+
+        private Stmt Declaration()
+        {
+            try
+            {
+                if (Match(TokenType.VAR)) return VarDeclaration();
+                return Statement();
+            }
+            catch (ParseError)
+            {
+                Synchronize();
+                return null;
+            }
+        }
+
+        private Stmt VarDeclaration()
+        {
+            Token name = Consume(TokenType.IDENTIFIER, "Expect variable name.");
+
+            Expr initializer = null;
+            if (Match(TokenType.EQUAL))
+            {
+                initializer = Expression();
+            }
+
+            Consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+            return new Stmt.Var(name, initializer);
+        }
 
         private Stmt Statement()
         {
@@ -84,7 +112,7 @@ namespace loxsharp
         private Exception Error(Token token, string message)
         {
             Lox.Error(token, message);
-            return new ParseException();
+            return new ParseError();
         }
 
         private bool Match(TokenType type)
@@ -218,6 +246,11 @@ namespace loxsharp
             if (Match(new TokenType[2] { TokenType.NUMBER, TokenType.STRING }))
             {
                 return new Expr.Literal(Previous().Literal);
+            }
+
+            if (Match(TokenType.IDENTIFIER))
+            {
+                return new Expr.Variable(Previous());
             }
 
             if (Match(TokenType.LEFT_PAREN))
