@@ -57,6 +57,13 @@ namespace loxsharp
 
         #region Expr.Visitor
 
+        public object VisitAssignExpr(Expr.Assign expr)
+        {
+            object value = Evaluate(expr.Value);
+            environment.Assign(expr.Name, value);
+            return value;
+        }
+
         public object VisitBinaryExpr(Expr.Binary expr)
         {
             object left = Evaluate(expr.Left);
