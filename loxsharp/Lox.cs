@@ -45,8 +45,8 @@ namespace loxsharp
         {
             String text = File.ReadAllText(Path.GetFullPath(path));
             Run(text);
-            if (hadError) Environment.Exit(65);
-            if (hadRuntimeError) Environment.Exit(70);
+            if (hadError) System.Environment.Exit(65);
+            if (hadRuntimeError) System.Environment.Exit(70);
         }
 
         public static void Error(int line, String message)
