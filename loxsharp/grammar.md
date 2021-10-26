@@ -1,5 +1,8 @@
 ﻿program        → statement* EOF ;
 
+declaration    → varDecl
+               | statement ;
+
 statement      → exprStmt
                | printStmt ;
 
