@@ -7,6 +7,7 @@ namespace loxsharp
 
         public interface Visitor<R>
         {
+            public R VisitAssignExpr(Assign expr);
             public R VisitBinaryExpr(Binary expr);
             public R VisitGroupingExpr(Grouping expr);
             public R VisitLiteralExpr(Literal expr);
@@ -15,6 +16,22 @@ namespace loxsharp
         }
 
         public abstract R Accept<R>(Visitor<R> visitor);
+
+        public class Assign : Expr
+        {
+            public readonly Token Name;
+            public readonly Expr Value;
+
+            public Assign(Token Name, Expr Value)
+            {
+                this.Name = Name;
+                this.Value = Value;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitAssignExpr(this);
+            }
+        }
 
         public class Binary : Expr
         {

@@ -1,5 +1,11 @@
 ﻿- AbstractClassName: Expr
   ImplClasses:
+  - ClassName: Assign
+    Fields:
+    - Name: Name
+      Type: Token
+    - Name: Value
+      Type: Expr        
   - ClassName: Binary
     Fields:
     - Name: Left

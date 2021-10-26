@@ -11,6 +11,11 @@ namespace loxsharp
             return expr.Accept(this);
         }
 
+        public String VisitAssignExpr(Expr.Assign expr)
+        {
+            throw new NotImplementedException();
+        }
+
         public String VisitBinaryExpr(Expr.Binary expr)
         {
             return Parenthesize(expr.Operator.Lexeme,
