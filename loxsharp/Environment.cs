@@ -24,6 +24,10 @@ namespace loxsharp
             {
                 Add(name.Lexeme, value);
             }
+            else if (enclosing != null)
+            {
+                enclosing.Assign(name, value);
+            }
             else
             {
                 throw UndefinedVariable(name);
@@ -46,6 +50,7 @@ namespace loxsharp
                 return value;
             }
 
+            if (enclosing != null) return enclosing.Get(name);
             throw UndefinedVariable(name);
         }
 
