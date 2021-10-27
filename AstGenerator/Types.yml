@@ -34,6 +34,10 @@
       Type: Token
 - AbstractClassName: Stmt
   ImplClasses:
+  - ClassName: Block
+    Fields:
+    - Name: Statements
+      Type: List<Stmt>
   - ClassName: Expression
     Fields:
     - Name: Expr

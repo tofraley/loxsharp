@@ -25,8 +25,13 @@ namespace loxsharp
             }
         }
 
-
         #region Stmt.Visitor
+
+        public Nothing VisitBlockStmt(Stmt.Block stmt)
+        {
+            ExecuteBlock(stmt.Statements, new Environment(environment));
+            return null;
+        }
 
         public Nothing VisitExpressionStmt(Stmt.Expression stmt)
         {
@@ -168,6 +173,24 @@ namespace loxsharp
         #endregion Expr.Visitor
 
         #region Helpers
+
+        public void ExecuteBlock(List<Stmt> statements, Environment environment)
+        {
+            Environment previous = this.environment;
+            try
+            {
+                this.environment = environment;
+
+                foreach (Stmt statement in statements)
+                {
+                    Execute(statement);
+                }
+            }
+            finally
+            {
+                this.environment = previous;
+            }
+        }
 
         private void Execute(Stmt stmt)
         {

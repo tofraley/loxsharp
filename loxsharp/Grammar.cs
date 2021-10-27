@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace loxsharp
 {
@@ -115,12 +116,27 @@ namespace loxsharp
 
         public interface Visitor<R>
         {
+            public R VisitBlockStmt(Block stmt);
             public R VisitExpressionStmt(Expression stmt);
             public R VisitPrintStmt(Print stmt);
             public R VisitVarStmt(Var stmt);
         }
 
         public abstract R Accept<R>(Visitor<R> visitor);
+
+        public class Block : Stmt
+        {
+            public readonly List<Stmt> Statements;
+
+            public Block(List<Stmt> Statements)
+            {
+                this.Statements = Statements;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitBlockStmt(this);
+            }
+        }
 
         public class Expression : Stmt
         {
