@@ -37,7 +37,7 @@ namespace loxsharp.Tests
         [InlineData("// this is a comment\n", TokenType.EOF, "", null, 2)]
         [InlineData("// this is a comment\n=", TokenType.EQUAL, "=", null, 2)]
         public void ScanTokens_Ignores_Comment(
-            string input, TokenType type, string lexeme = null, 
+            string input, TokenType type, string lexeme = null,
             object literal = null, int line = 1)
         {
             lexeme ??= input;
@@ -49,7 +49,7 @@ namespace loxsharp.Tests
 
             Assert.Equal(actual, expected);
         }
-        
+
         [Fact]
         public void ScanTokens_Recognizes_MultipleTokens()
         {
