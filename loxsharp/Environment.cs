@@ -5,7 +5,18 @@ namespace loxsharp
 {
     public class Environment
     {
+        private readonly Environment enclosing;
         private readonly Dictionary<String, object> values = new Dictionary<String, object>();
+
+        public Environment()
+        {
+            enclosing = null;
+        }
+
+        public Environment(Environment enclosing)
+        {
+            this.enclosing = enclosing;
+        }
 
         public void Assign(Token name, object value)
         {
