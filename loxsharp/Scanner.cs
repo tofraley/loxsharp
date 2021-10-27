@@ -187,7 +187,7 @@ namespace loxsharp
             Advance();
 
             // Trim the surrounding quotes.
-            String value = source.Substring(start + 1, current - start - 1);
+            String value = source.Substring(start, current - start).Trim('"');
             AddToken(TokenType.STRING, value);
         }
 
