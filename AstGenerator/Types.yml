@@ -22,6 +22,14 @@
     Fields:
     - Name: Value
       Type: Object
+  - ClassName: Logical
+    Fields:
+    - Name: Left
+      Type: Expr
+    - Name: Operator
+      Type: Token        
+    - Name: Right
+      Type: Expr
   - ClassName: Unary
     Fields:
     - Name: Operator
@@ -42,6 +50,14 @@
     Fields:
     - Name: Expr
       Type: Expr
+  - ClassName: If
+    Fields:
+    - Name: Condition
+      Type: Expr
+    - Name: ThenBranch
+      Type: Stmt
+    - Name: ElseBranch
+      Type: Stmt
   - ClassName: Print
     Fields:
     - Name: Expr

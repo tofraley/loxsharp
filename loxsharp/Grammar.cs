@@ -12,6 +12,7 @@ namespace loxsharp
             public R VisitBinaryExpr(Binary expr);
             public R VisitGroupingExpr(Grouping expr);
             public R VisitLiteralExpr(Literal expr);
+            public R VisitLogicalExpr(Logical expr);
             public R VisitUnaryExpr(Unary expr);
             public R VisitVariableExpr(Variable expr);
         }
@@ -80,6 +81,24 @@ namespace loxsharp
             }
         }
 
+        public class Logical : Expr
+        {
+            public readonly Expr Left;
+            public readonly Token Operator;
+            public readonly Expr Right;
+
+            public Logical(Expr Left, Token Operator, Expr Right)
+            {
+                this.Left = Left;
+                this.Operator = Operator;
+                this.Right = Right;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitLogicalExpr(this);
+            }
+        }
+
         public class Unary : Expr
         {
             public readonly Token Operator;
@@ -118,6 +137,7 @@ namespace loxsharp
         {
             public R VisitBlockStmt(Block stmt);
             public R VisitExpressionStmt(Expression stmt);
+            public R VisitIfStmt(If stmt);
             public R VisitPrintStmt(Print stmt);
             public R VisitVarStmt(Var stmt);
         }
@@ -149,6 +169,24 @@ namespace loxsharp
 
             public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitExpressionStmt(this);
+            }
+        }
+
+        public class If : Stmt
+        {
+            public readonly Expr Condition;
+            public readonly Stmt ThenBranch;
+            public readonly Stmt ElseBranch;
+
+            public If(Expr Condition, Stmt ThenBranch, Stmt ElseBranch)
+            {
+                this.Condition = Condition;
+                this.ThenBranch = ThenBranch;
+                this.ElseBranch = ElseBranch;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitIfStmt(this);
             }
         }
 
