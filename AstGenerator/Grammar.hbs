@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace loxsharp
 {
@@ -19,10 +20,10 @@ namespace loxsharp
         public class {{implClass.ClassName}} : {{absClass.AbstractClassName}}
         {
             {{#each implClass.Fields as | field | }}
-            public readonly {{field.Type}} {{field.Name}};
+            public readonly {{{field.Type}}} {{field.Name}};
             {{/each}}
 
-            public {{implClass.ClassName}}({{#each implClass.Fields as | field |}}{{field.Type}} {{field.Name}}{{#unless @last}}, {{/unless}}{{/each}})
+            public {{implClass.ClassName}}({{#each implClass.Fields as | field |}}{{{field.Type}}} {{field.Name}}{{#unless @last}}, {{/unless}}{{/each}})
             {
                 {{#each implClass.Fields as | field |}}
                 this.{{field.Name}} = {{field.Name}};
