@@ -27,6 +27,15 @@ namespace loxsharp
 
         #region Stmt.Visitor
 
+        public Nothing VisitWhileStmt(Stmt.While stmt)
+        {
+            while (IsTruthy(Evaluate(stmt.Condition)))
+            {
+                Execute(stmt.Body);
+            }
+            return null;
+        }
+
         public Nothing VisitIfStmt(Stmt.If stmt)
         {
             if (IsTruthy(Evaluate(stmt.Condition)))

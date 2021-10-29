@@ -68,3 +68,9 @@
       Type: Token
     - Name: Initializer
       Type: Expr
+  - ClassName: While
+    Fields:
+    - Name: Condition
+      Type: Expr
+    - Name: Body
+      Type: Stmt

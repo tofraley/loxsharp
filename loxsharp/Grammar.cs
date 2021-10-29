@@ -140,6 +140,7 @@ namespace loxsharp
             public R VisitIfStmt(If stmt);
             public R VisitPrintStmt(Print stmt);
             public R VisitVarStmt(Var stmt);
+            public R VisitWhileStmt(While stmt);
         }
 
         public abstract R Accept<R>(Visitor<R> visitor);
@@ -217,6 +218,22 @@ namespace loxsharp
 
             public override R Accept<R>(Visitor<R> visitor) {
                 return visitor.VisitVarStmt(this);
+            }
+        }
+
+        public class While : Stmt
+        {
+            public readonly Expr Condition;
+            public readonly Stmt Body;
+
+            public While(Expr Condition, Stmt Body)
+            {
+                this.Condition = Condition;
+                this.Body = Body;
+            }
+
+            public override R Accept<R>(Visitor<R> visitor) {
+                return visitor.VisitWhileStmt(this);
             }
         }
     }
