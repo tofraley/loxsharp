@@ -157,26 +157,6 @@ namespace loxsharp
             return null;
         }
 
-        private void CheckNumberOperands(Token oper8r, object left, object right)
-        {
-            if (left is Double && right is Double) return;
-            throw new RuntimeError(oper8r, "Operands must be numbers.");
-        }
-
-        private void CheckNumberOperand(Token oper8r, object operand)
-        {
-            if (operand is Double) return;
-            throw new RuntimeError(oper8r, "Operand must be a number.");
-        }
-
-        private bool IsEqual(object a, object b)
-        {
-            if (a == null && b == null) return true;
-            if (a == null) return false;
-
-            return a.Equals(b);
-        }
-
         public object VisitGroupingExpr(Expr.Grouping expr)
         {
             return Evaluate(expr.Expression);
@@ -211,6 +191,26 @@ namespace loxsharp
         #endregion Expr.Visitor
 
         #region Helpers
+
+        private void CheckNumberOperands(Token oper8r, object left, object right)
+        {
+            if (left is Double && right is Double) return;
+            throw new RuntimeError(oper8r, "Operands must be numbers.");
+        }
+
+        private void CheckNumberOperand(Token oper8r, object operand)
+        {
+            if (operand is Double) return;
+            throw new RuntimeError(oper8r, "Operand must be a number.");
+        }
+
+        private bool IsEqual(object a, object b)
+        {
+            if (a == null && b == null) return true;
+            if (a == null) return false;
+
+            return a.Equals(b);
+        }
 
         public void ExecuteBlock(List<Stmt> statements, Environment environment)
         {
